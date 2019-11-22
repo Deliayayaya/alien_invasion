@@ -1,16 +1,23 @@
 import pygame,sys
 from bullet import Bullet
 from alien import Alien
-def check_event(setting, screen, ship, bullets):
+def check_event(setting, screen, ship, bullets,status,button):
       for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 keydown_event(event,setting,screen,ship,bullets);
             elif event.type == pygame.KEYUP:
-                keyup_event(event,ship);
+                keyup_event(event,ship)
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_x,mouse_y = pygame.mouse.get_pos()
+                check_game_start(status,button,mouse_x,mouse_y)
+def check_game_start(status,button,mouse_x,mouse_y):
+    if button.rect.collidepoint(mouse_x, mouse_y):
+        status.game_status = True
 
-def update_event(screen,setting,ship,bullets,aliens):
+
+def update_screen(screen,setting,ship,bullets,aliens,button,status):
       #每次循环时都要重新绘制背景色
         screen.fill(setting.bg_color)
         #绘制飞船
@@ -20,6 +27,9 @@ def update_event(screen,setting,ship,bullets,aliens):
         #绘制子弹
         for bullet in bullets.sprites():
             bullet.draw_bullet()
+        #绘制按钮（在最上层）
+        if status.game_status == False:
+            button.draw_button()
         #更新整个显示屏
         pygame.display.flip()
 
@@ -117,7 +127,6 @@ def update_aliens(setting,screen,ship,bullets,aliens,status):
         status.reset_game()
 
 def ship_hit(setting,screen,ship,bullets,aliens,status):
-    print("status==",status.ship_limit)
     status.ship_limit -= 1
     #外星人和子弹清空
     aliens.empty()
