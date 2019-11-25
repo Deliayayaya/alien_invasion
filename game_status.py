@@ -5,8 +5,8 @@ class Status():
         self.ship_limit = 3
         self.game_status = False
         # self.reset_game()
-    def reset_game(self):
-        self.game_status =False
+    # def reset_game(self):
+    #     self.game_status =False
 
 
 

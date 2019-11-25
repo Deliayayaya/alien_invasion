@@ -1,7 +1,7 @@
 import pygame,sys
 from bullet import Bullet
 from alien import Alien
-def check_event(setting, screen, ship, bullets,status,button):
+def check_event(setting, screen, ship, bullets,status,button,aliens):
       for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 sys.exit()
@@ -11,11 +11,24 @@ def check_event(setting, screen, ship, bullets,status,button):
                 keyup_event(event,ship)
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_x,mouse_y = pygame.mouse.get_pos()
-                check_game_start(status,button,mouse_x,mouse_y)
-def check_game_start(status,button,mouse_x,mouse_y):
-    if button.rect.collidepoint(mouse_x, mouse_y):
-        status.game_status = True
+                check_play_button(setting,screen,ship,button,status,aliens,bullets,mouse_x,mouse_y)
+def check_play_button(setting,screen,ship,button,status,aliens,bullets,mouse_x,mouse_y):
 
+    clicked = button.rect.collidepoint(mouse_x, mouse_y)
+    print(clicked,status.game_status)
+    if clicked and not status.game_status:
+        status.game_status = True
+        #重置飞船命数
+        status.ship_limit =3
+        #外星人和子弹清空
+        aliens.empty()
+        bullets.empty()
+        #重新初始化飞船和外星人
+        make_aliens(setting,screen,ship,aliens)
+        ship.reset()
+
+        print('aaa',status.ship_limit)
+        # pygame.mouse.set_visible(False)
 
 def update_screen(screen,setting,ship,bullets,aliens,button,status):
       #每次循环时都要重新绘制背景色
@@ -124,18 +137,20 @@ def update_aliens(setting,screen,ship,bullets,aliens,status):
                 ship_hit(setting,screen,ship,bullets,aliens,status)
                 break
     else:
-        status.reset_game()
+        status.game_status =False
+        #光标可见
+        # pygame.mouse.set_visible(True)
 
 def ship_hit(setting,screen,ship,bullets,aliens,status):
-    status.ship_limit -= 1
-    #外星人和子弹清空
-    aliens.empty()
-    bullets.empty()
-    #重新初始化飞船和外星人
-    make_aliens(setting,screen,ship,aliens)
-    ship.ship_speed_factor +=1
-    print(ship.ship_speed_factor)
-    ship.reset()
+        status.ship_limit -= 1
+        ship.ship_speed_factor +=1
+
+        #外星人和子弹清空
+        aliens.empty()
+        bullets.empty()
+        #重新初始化飞船和外星人
+        make_aliens(setting,screen,ship,aliens)
+        ship.reset()
 
 def check_fleet_edges(setting,aliens):
     for alien in aliens.sprites():

@@ -23,7 +23,7 @@ def run_game():
     gf.make_aliens(ai_setting, screen,ai_ship, aliens)
     while 1:
         #检查监听事件
-        gf.check_event(ai_setting, screen, ai_ship,bullets,status,button)
+        gf.check_event(ai_setting, screen, ai_ship,bullets,status,button,aliens)
         # print(status.game_status)
         if status.game_status == True:
             #更新外星ufo的位置
