@@ -6,7 +6,7 @@ class Status():
         self.game_status = False
         # self.reset_game()
     # def reset_game(self):
-    #     self.game_status =False
+    #     self.game_status = False
 
 
 

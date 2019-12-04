@@ -6,6 +6,10 @@ from button import Button
 from game_status import Status
 import game_functions as gf
 from pygame.sprite import Group
+from score_board import Score
+import warnings
+warnings.filterwarnings('ignore')
+
 def run_game():
     pygame.init()
     ai_setting = Settings()
@@ -20,20 +24,22 @@ def run_game():
     #游戏控制类
     status = Status()
     # 创建外星人群
+    # 绘制得分板
+    scoreboard = Score(screen,ai_setting,status)
     gf.make_aliens(ai_setting, screen,ai_ship, aliens)
     while 1:
         #检查监听事件
-        gf.check_event(ai_setting, screen, ai_ship,bullets,status,button,aliens)
+        gf.check_event(ai_setting, screen, ai_ship,bullets,status,button,aliens,scoreboard)
         # print(status.game_status)
         if status.game_status == True:
             #更新外星ufo的位置
-            gf.update_aliens(ai_setting,screen,ai_ship,bullets,aliens,status)
+            gf.update_aliens(ai_setting,screen,ai_ship,bullets,aliens,status,scoreboard)
             #更新飞船的位置
             ai_ship.update()
             #更新子弹的位置
-            gf.update_bullets(ai_setting,screen,ai_ship,bullets,aliens)
+            gf.update_bullets(ai_setting,screen,ai_ship,bullets,aliens,scoreboard)
             #更新屏幕
-        gf.update_screen(screen,ai_setting,ai_ship,bullets,aliens,button,status)
+        gf.update_screen(screen,ai_setting,ai_ship,bullets,aliens,button,status,scoreboard)
 
 run_game()
 

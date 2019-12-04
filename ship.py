@@ -6,15 +6,17 @@
 # @Version : $Id$
 
 import pygame
-class Ship():
+from pygame.sprite import Sprite
+class Ship(Sprite):
     def __init__(self,ai_setting,screen):
-
+        # ships = Sprite()
+        super(Ship, self).__init__()
         self.ship_limit = 3
         self.moving_right = False
         self.moving_left = False
         self.moving_up = False
         self.moving_down = False
-        self.ship_speed_factor = 1
+        self.ship_speed_factor = 20
         self.screen = screen
         self.ai_setting =ai_setting
         #引入飞船图片
@@ -22,6 +24,7 @@ class Ship():
         #将飞船图片放在屏幕下正中间
         #获取飞船矩形
         self.rect = self.image.get_rect()
+        self.width,self.height = self.image.get_size()
         #获取屏幕矩形
         self.screen_rect = screen.get_rect()
         self.rect.centerx = self.screen_rect.centerx
@@ -32,6 +35,7 @@ class Ship():
         self.align =float(self.rect.bottom)
     def drawship (self):
         self.screen.blit(self.image,self.rect)
+
     def update (self):
         if self.moving_right and self.rect.right < self.screen_rect.right:
             self.center += self.ship_speed_factor
@@ -49,6 +53,7 @@ class Ship():
     def reset(self):
         self.center = self.screen_rect.centerx
         self.align = self.screen_rect.bottom
+
 
 
 
