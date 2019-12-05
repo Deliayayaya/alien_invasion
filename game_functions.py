@@ -23,7 +23,7 @@ def check_play_button(setting,screen,ship,button,status,aliens,bullets,mouse_x,m
         status.ship_limit =3
         #重置/设置分数
 
-        # sb.draw_ships()
+        sb.show_ships()
         sb.score_number =0
         sb.heigh_score =0
         #外星人和子弹清空
@@ -50,7 +50,6 @@ def update_screen(screen,setting,ship,bullets,aliens,button,status,sb):
         #绘制按钮（在最上层）
         if status.game_status == False:
             button.draw_button()
-
         #更新整个显示屏
         pygame.display.flip()
 
@@ -125,7 +124,6 @@ def make_aliens(setting,screen,ship,aliens):
     alien = Alien(setting,screen)
     alien_number = get_number_aliens_x(setting,screen)
     alien_rows = get_rows_aliens(setting,ship.rect.height,alien.rect.height)
-    # print(alien_rows)
     for row in range(alien_rows):
         for a in range(alien_number):
             create_aliens(a,row,setting,screen,aliens)
@@ -139,6 +137,7 @@ def update_aliens(setting,screen,ship,bullets,aliens,status,sb):
     check_fleet_edges(setting,aliens)
     aliens.update(setting)
     if status.ship_limit > 0:
+        sb.show_ships()
         #飞船和外星人相撞
         if pygame.sprite.spritecollideany(ship, aliens):
 
@@ -159,7 +158,8 @@ def ship_hit(setting,screen,ship,bullets,aliens,status,sb):
     #game over
         status.ship_limit -= 1
         ship.ship_speed_factor +=1
-
+        sb.show_ships()
+        # sb.draw_sb()
         check_heigh_score(status,sb)
         sb.score_number = 0
         #外星人和子弹清空
